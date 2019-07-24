@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn import tree
 from IPython.display import Image
 from sklearn.externals.six import StringIO
+from sklearn.ensemble import RandomForestClassifier
 import pydot
 
 
@@ -24,12 +25,15 @@ print(df.head())
 features = list(df.columns[:6])
 print(features)
 
-Y = df['Hired']
+y = df['Hired']
 
 X = df[features]
 
-clf = tree.DecisionTreeClassifier()
-clf = clf.fit(X,Y)
+clf = RandomForestClassifier(n_estimators=10)
+clf = clf.fit(X,y)
+
+print(clf.predict([[10, 1, 4, 0, 0, 0]]))
+print(clf.predict([[10, 0, 4, 0, 0, 0]]))
 
 dot_data = StringIO()
 tree.export_graphviz(clf, out_file=dot_data,feature_names=features)
